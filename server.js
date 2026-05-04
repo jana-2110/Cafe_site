@@ -4,13 +4,15 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:4173'],
+  credentials: true,
+}));
 app.use(express.json());
-app.use(express.static(__dirname));
 
 // Ensure data directory and file exist
 if (!fs.existsSync(path.join(__dirname, 'data'))) {
@@ -146,5 +148,5 @@ app.get('/api/orders', (req, res) => {
 
 // ===== START =====
 app.listen(PORT, () => {
-  console.log(`\n☕ Brew & Bean server running at http://localhost:${PORT}\n`);
+  console.log(`\n☕ Brew & Bean API server running at http://localhost:${PORT}\n`);
 });
